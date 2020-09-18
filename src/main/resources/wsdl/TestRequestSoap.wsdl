@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://test.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://test.org/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/">
+  <wsdl:types>
+    <s:schema targetNamespace="http://test.org/" elementFormDefault="qualified">
+      <s:element name="SampleRequest">
+        <s:complexType>
+          <s:sequence>
+            <s:element type="s:int" name="Number1" maxOccurs="1" minOccurs="1"/>
+            <s:element type="s:string" name="string2" maxOccurs="1" minOccurs="0"/>
+            <s:element type="s:string" name="string3" maxOccurs="1" minOccurs="0"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SampleRequestResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element type="s:boolean" name="SampleRequestResult" maxOccurs="1" minOccurs="1"/>
+            <s:element type="s:string" name="string3" maxOccurs="1" minOccurs="0"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+     </s:schema>
+  </wsdl:types>
+
+  <wsdl:message name="SampleRequestSoapIn">
+    <wsdl:part name="parameters" element="tns:SampleRequest"/>
+  </wsdl:message>
+  <wsdl:message name="SampleRequestSoapOut">
+    <wsdl:part name="parameters" element="tns:SampleRequestResponse"/>
+  </wsdl:message>
+
+  <wsdl:portType name="TestRequestSoap">
+
+    <wsdl:operation name="SampleRequest">
+      <wsdl:input message="tns:SampleRequestSoapIn"/>
+      <wsdl:output message="tns:SampleRequestSoapOut"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding type="tns:TestRequestSoap" name="TestRequestSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+
+    <wsdl:operation name="SampleRequest">
+      <soap:operation style="document" soapAction="http://test.org/SampleRequest"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding type="tns:TestRequestSoap" name="TestRequestSoap12">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+
+    <wsdl:operation name="SampleRequest">
+      <soap12:operation style="document" soapAction="http://test.org/SampleRequest"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+
+  </wsdl:binding>
+  <wsdl:service name="TestRequest">
+    <wsdl:port name="TestRequestSoap" binding="tns:TestRequestSoap">
+      <soap:address location="http://0.0.0.0:8080/report"/>
+    </wsdl:port>
+    <wsdl:port name="TestRequestSoap12" binding="tns:TestRequestSoap12">
+      <soap12:address location="http://0.0.0.0:8080/report"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
